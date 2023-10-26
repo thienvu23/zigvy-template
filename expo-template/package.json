@@ -11,7 +11,7 @@
     "lint": "eslint --ext .tsx --ext .ts src/",
     "format": "prettier --check ./src",
     "pre-commit": "lint-staged",
-    "prepare": "cd ../ && husky install ./expo-template/.husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.2.3",
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@tamagui/theme-builder": "^1.75.4",
     "@types/react": "~18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
@@ -61,7 +62,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd expo-template && npx lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "expo": {

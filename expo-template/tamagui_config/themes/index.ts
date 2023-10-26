@@ -29,7 +29,7 @@ type Theme = {
   placeholderColor: string;
 };
 
-function t(a) {
+function t(a: any) {
   let res: Record<string, string> = {};
   for (const [ki, vi] of a) {
     res[ks[ki]] = vs[vi];

@@ -1,15 +1,8 @@
-import React, {useContext, useMemo} from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getSize} from '@tamagui/get-token';
-import {
-  Button,
-  SizableText,
-  SizeTokens,
-  View,
-  createStyledContext,
-  useProps,
-} from 'tamagui';
-import {XStack, styled, withStaticProperties} from 'tamagui';
+import React, { useContext, useMemo } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getSize } from '@tamagui/get-token';
+import { Button, SizableText, SizeTokens, View, createStyledContext, useProps } from 'tamagui';
+import { XStack, styled, withStaticProperties } from 'tamagui';
 import Icons from '../Icons';
 
 const APP_BAR_NAME = 'Appbar';
@@ -19,7 +12,7 @@ type AppbarContext = {
   actionSize?: SizeTokens;
 };
 
-type AppbarProps = AppbarContext & {};
+type AppbarProps = AppbarContext;
 
 export const AppbarContext = createStyledContext<Partial<AppbarContext>>({
   contentShouldCenter: false,
@@ -49,23 +42,23 @@ const AppbarFrame = styled(XStack, {
 });
 
 const AppbarComponent = AppbarFrame.styleable<AppbarProps>((props, ref) => {
-  const {top, left, right} = useSafeAreaInsets();
-  const {actionSize} = useContext(AppbarContext);
+  const { top, left, right } = useSafeAreaInsets();
+  const { actionSize } = useContext(AppbarContext);
   const appBarProps = useProps(props);
 
   const actionBtnSize = appBarProps.actionSize ?? actionSize;
 
   const actionSpacing = getSize(actionBtnSize).val;
 
-  const {leftActionCount, rightActionCount} = useMemo(() => {
+  const { leftActionCount, rightActionCount } = useMemo(() => {
     let _leftActionCount = 0;
     let _rightActionCount = 0;
     let _hasAppbarContent = false;
     const childrenArr = React.Children.toArray(props.children).filter(
-      child => child != null && typeof child !== 'boolean',
+      (child) => child != null && typeof child !== 'boolean',
     ) as React.ReactElement[];
 
-    childrenArr.forEach(child => {
+    childrenArr.forEach((child) => {
       if (child.type === AppbarContent) {
         _hasAppbarContent = true;
       } else if (_hasAppbarContent) {
@@ -82,10 +75,8 @@ const AppbarComponent = AppbarFrame.styleable<AppbarProps>((props, ref) => {
     };
   }, [props.children]);
 
-  const leftSpacing =
-    leftActionCount === 0 ? actionSpacing * rightActionCount : 0;
-  const rightSpacing =
-    rightActionCount === 0 ? actionSpacing * leftActionCount : 0;
+  const leftSpacing = leftActionCount === 0 ? actionSpacing * rightActionCount : 0;
+  const rightSpacing = rightActionCount === 0 ? actionSpacing * leftActionCount : 0;
 
   const children = (
     <>
@@ -96,13 +87,9 @@ const AppbarComponent = AppbarFrame.styleable<AppbarProps>((props, ref) => {
   );
 
   return (
-    <AppbarFrame
-      {...appBarProps}
-      paddingTop={top}
-      paddingHorizontal={Math.max(left, right) || '$3'}
-      ref={ref}
-      children={children}
-    />
+    <AppbarFrame {...appBarProps} paddingTop={top} paddingHorizontal={Math.max(left, right) || '$3'} ref={ref}>
+      {children}
+    </AppbarFrame>
   );
 });
 
@@ -135,7 +122,7 @@ const AppbarAction = styled(Button, {
 
   variants: {
     actionSize: {
-      '...size': name => {
+      '...size': (name) => {
         return {
           size: name,
           maxWidth: name,
@@ -158,4 +145,4 @@ export default withStaticProperties(AppbarComponent, {
   BackAction: AppbarBackAction,
 });
 
-export type {AppbarProps};
+export type { AppbarProps };
