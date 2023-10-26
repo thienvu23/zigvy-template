@@ -1,4 +1,4 @@
-import "dayjs.extend.ts";
+import "dayjs.extend";
 import { StatusBar } from 'expo-status-bar';
 import { LogBox } from 'react-native';
 import AppRoot from '@/index'
@@ -21,7 +21,7 @@ import tamaguiConfig from './tamagui.config';
 SplashScreen.preventAutoHideAsync();
 
 LogBox.ignoreAllLogs();
-con
+
 export default function App() {
   const [loaded] = useFonts({
     [FontFamilyName.Montserrat]: Montserrat_400Regular,
