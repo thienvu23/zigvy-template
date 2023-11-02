@@ -52,12 +52,14 @@ Base Project Description
   - splash-screen, app-icon
   - react-native-svg, react-native-svg-transformer
   - lodash
+  - dayjs
   - axios
   - react-native-animatable
   - i18next, react-i18next
-  - react-native-code-push(update OTA, crash-report, ..), Expo(sentry-expo(crash-report), expo-updates)
+  - react-native-code-push(update OTA, crash-report, ..), Expo(sentry-expo(crash-report), expo-updates(account-username))
   - redux, @reduxjs/toolkit, react-redux, redux-persist, redux-persist-transform-filter
 - Other Function
   - Husky, Eslint, Prettier
+  - Create Snippets template code
   - Environment
   - assets (font, ...)
