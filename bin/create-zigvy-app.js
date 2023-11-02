@@ -30,7 +30,7 @@ export async function createExpoApp(appName, forwardedOpts) {
         "create-expo-app",
         appName,
         "-t",
-        path.resolve(__dirname, "../node_modules/expo-template"),
+        path.resolve(__dirname, "../node_modules/zigvy-expo-template"),
       ],
       { ...execaOpts, cwd: process.cwd() }
     );

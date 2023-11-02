@@ -11,8 +11,8 @@
   "dependencies": {
     "commander": "^11.1.0",
     "execa": "^8.0.1",
-    "expo-template": "https://github.com/thienvu23/zigvy-expo-template",
-    "fs-extra": "^11.1.1"
+    "fs-extra": "^11.1.1",
+    "zigvy-expo-template": "https://github.com/thienvu23/zigvy-expo-template"
   },
   "main": "index.js",
   "scripts": {
