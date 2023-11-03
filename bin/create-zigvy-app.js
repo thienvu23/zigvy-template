@@ -5,66 +5,54 @@ import path, { dirname } from "path";
 import fs from "fs-extra";
 import { Command, Argument } from "commander";
 import { execa } from "execa";
+import prompts from "prompts";
+import { createExpoApp } from "./create-expo-app";
 
 const program = new Command();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export async function createExpoApp(appName, forwardedOpts) {
-  try {
-    console.log("🧻 INIT PROJECT WITH EXPO");
+const handleCreateApp = async (_appName) => {
+  const promptsRun = [];
 
-    const targetDirectory = path.resolve(process.cwd(), appName);
-    const execaOpts = { stdio: "inherit", cwd: targetDirectory };
-
-    // console.log("Copping template...");
-    // await fs.copy(
-    //   path.resolve(__dirname, "../zigvy-expo-template"),
-    //   path.resolve(targetDirectory)
-    // );
-
-    await execa(
-      "npx",
-      [
-        "create-expo-app",
-        appName,
-        "-t",
-        path.resolve(__dirname, "../node_modules/zigvy-expo-template"),
-      ],
-      { ...execaOpts, cwd: process.cwd() }
-    );
-
-    console.log("Installing additional dependencies...");
-    // await execa("yarn", ["install"], execaOpts);
-
-    console.log("Setting up project structure...");
-
-    console.log("✅ Done!");
-  } catch (e) {
-    console.error(e.stderr || e);
-    process.exit(1);
+  // Missing arg ask by prompts
+  if (!_appName) {
+    promptsRun.push({
+      type: "text",
+      name: "appName",
+      message: "App name?:",
+      validate: (v) => !!v || "App name is require",
+    });
   }
-}
 
-const handleAppType = (appName, appType) => {
-  if (appType === "rn") {
-    console.log("INIT PROJECT WITH REACT NATIVE");
-  } else if (appType === "expo") {
-    createExpoApp(appName, {});
+  // Pick App Type
+  const appTypes = [
+    { title: "expo", value: 0 },
+    { title: "react-native", value: 1 },
+  ];
+  promptsRun.push({
+    type: "select",
+    name: "appType",
+    message: "Choose a app type:",
+    choices: appTypes,
+  });
+
+  const { appType, appName = _appName } = await prompts(promptsRun);
+
+  if (appType === 1) {
+    console.log("React-native template not support now");
+  } else if (appType === 0) {
+    await createExpoApp(appName);
   }
+
+  console.log("✅ Done!");
 };
 
 program
   .version("1.0.0")
   .name("create-zigvy-app")
-  .usage("[options] <app-name>")
-  .arguments("<app-name>")
-  .addArgument(
-    new Argument("<app-type>", "Select app type to init").choices([
-      "rn",
-      "expo",
-    ])
-  )
-  .action(handleAppType)
+  .usage("[options] [app-name]")
+  .arguments("[app-name]")
+  .action(handleCreateApp)
   .parse(process.argv);
