@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 
-import { fileURLToPath } from "url";
-import path, { dirname } from "path";
-import fs from "fs-extra";
-import { Command, Argument } from "commander";
-import { execa } from "execa";
+import { Command } from "commander";
 import prompts from "prompts";
-import { createExpoApp } from "./create-expo-app";
+import { createExpoApp } from "./create-expo-app.mjs";
 
 const program = new Command();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export const APP_TYPE = {
+  reactNative: 1,
+  expo: 0,
+};
+
+export const APP_SERVICE_TYPE = {
+  reactQuery: 1,
+  graphql: 0,
+};
 
 const handleCreateApp = async (_appName) => {
   const promptsRun = [];
@@ -28,29 +31,44 @@ const handleCreateApp = async (_appName) => {
 
   // Pick App Type
   const appTypes = [
-    { title: "expo", value: 0 },
-    { title: "react-native", value: 1 },
+    { title: "expo", value: APP_TYPE.expo },
+    { title: "react-native", value: APP_TYPE.reactNative },
   ];
-  promptsRun.push({
-    type: "select",
-    name: "appType",
-    message: "Choose a app type:",
-    choices: appTypes,
-  });
+  const appServiceTypes = [
+    { title: "react-query", value: APP_SERVICE_TYPE.reactQuery },
+    { title: "graphql", value: APP_SERVICE_TYPE.graphql },
+  ];
+  promptsRun.push([
+    {
+      type: "select",
+      name: "appType",
+      message: "Choose a app type:",
+      choices: appTypes,
+    },
+    {
+      type: "select",
+      name: "appServiceType",
+      message: "Choose a app service type:",
+      choices: appServiceTypes,
+    },
+  ]);
 
-  const { appType, appName = _appName } = await prompts(promptsRun);
+  const {
+    appType,
+    appName = _appName,
+    appServiceType,
+  } = await prompts(promptsRun);
 
   if (appType === 1) {
     console.log("React-native template not support now");
   } else if (appType === 0) {
-    await createExpoApp(appName);
+    await createExpoApp({ appName, appServiceType });
   }
 
   console.log("✅ Done!");
 };
 
 program
-  .version("1.0.0")
   .name("create-zigvy-app")
   .usage("[options] [app-name]")
   .arguments("[app-name]")

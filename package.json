@@ -5,7 +5,8 @@
   "version": "1.0.0",
   "description": "",
   "bin": {
-    "create-zigvy-app": "bin/create-zigvy-app.js"
+    "create-zigvy-app": "bin/create-zigvy-app.js",
+    "zigvy": "bin/zigvy.js"
   },
   "author": "ThienVu",
   "dependencies": {
